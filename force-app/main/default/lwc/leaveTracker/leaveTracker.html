@@ -1,0 +1,18 @@
+<template>
+    <lightning-card  title="Leave Tracker Application" icon-name="standard:account">
+        <div class="slds-m-left_medium">
+        <lightning-tabset variant="standard" active-tab-value="one">
+            <lightning-tab label="My Leaves" value="one">
+                <c-my-leaves onrefreshleaveequest={refreshLeaveRequestHandler}></c-my-leaves>
+            </lightning-tab>
+            <lightning-tab label="Leave Requests" value="two">
+               <c-leave-requests lwc:ref="leaveRequestComp"></c-leave-requests>
+            </lightning-tab>
+            <lightning-tab class="slds-float_right">
+                <lightning-button-icon variant="base" slot="actions" icon-name="utility:add" alternative-text="Apply Leave" onclick={addLeaveHandler} size="small"></lightning-button-icon>
+             </lightning-tab>
+        </lightning-tabset>
+        
+    </div>
+    </lightning-card>
+</template>

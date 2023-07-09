@@ -1,0 +1,63 @@
+
+// Stage field
+
+new inprogress closed 
+
+
+
+
+Trigger Demo Trigger On Account(After Insert, After Update){
+
+    if(Trigger.isAfter && (Trigger.isInsert && Trigger.isUpdate)){
+        domoClass.demoFun(Trigger.New, trigger.oldMap);
+    }
+    
+}
+
+
+public with sharing class domoClass{
+
+public static void demoFun(List<Account> listAcc, Map<Id, Account> oldAcc){
+
+    Map<Id, Account> listOfUpdatedAcc = new Map<Id, Account>();
+    if(!list.isEmpty()){
+        for(Account acc : listAcc){
+            
+            Account oldAcc = oldAcc.get(acc.Id);
+
+            if(acc.Stage != oldAcc.Stage){
+                listOfUpdatedAcc.put(acc.Id, acc );
+            }
+
+        }
+    }
+
+    List<Contact> listOfContact = [SELECT AccountId, Stage FROM Contact WHERE AccountId IN : listOfUpdatedAcc.keySet()];
+
+    List<Contact> conToUpdate = List<Contact>();
+    if(!listOfContact.isEmpty()){
+
+        for(Conatct con : listOfContact){
+            for(Account acc : listAcc){
+                
+                if(con.Stage != acc.Stage){
+                    con.Stage = acc.Stage;
+                    conToUpdate.add(con);
+                }
+            }
+
+        }
+
+        if(!conToUpdate.isEmpty()){
+
+            update conToUpdate;
+        
+        }
+
+    }
+
+}
+
+}
+
+
